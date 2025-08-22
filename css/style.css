@@ -1,0 +1,60 @@
+:root {
+            --primary: #ff0909;
+            --secondary: #eeff00;
+        }
+        
+        body {
+            /* background: linear-gradient(135deg, #3328d37c 0%, #e4e7eb 100%);
+            min-height: 100vh;
+            transition: background 0.5s ease; */
+            background-image: url("../img/galaxy.jpg");
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            filter: brightness(0.8);
+        }
+        
+        footer {
+            background-color: #a2b6ca;
+            padding: 20px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: #4b5563;
+            box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+        
+        .bg-gradient {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+        
+        .task-container {
+            max-height: 400px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+        
+        .task-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .task-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .task-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        
+        .task-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        .modal {
+            transition: opacity 0.3s ease-in-out;
+        }

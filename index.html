@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List - Sandy Ismawan</title>
+
+    <!-- CSS External -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+</head>
+<body class="font-mono">
+    <div class="container mx-auto px-4 py-8 max-w-3xl">
+        <header class="text-center mb-8">
+            <h1 class="text-6xl font-bold bg-gradient text-transparent bg-clip-text mb-2">Todo</h1>
+            <h1 class="text-6xl font-bold bg-gradient text-transparent bg-clip-text mb-2">List</h1>
+            <p class="text-2xl text-red-600"><b>FILL IN THIS FORM</b></p>
+        </header>
+        
+        <div class="bg-white rounded-lg shadow-lg p-7 mb-10 transition-all duration-300 hover:shadow-xl">
+            <form id="todoForm" class="space-y-4">
+                <div>
+                    <label for="taskInput" class="block text-sm font- text-red-700 mb-1"><b>Task</b></label>
+                    <input type="text" id="taskInput" placeholder="Enter your task..." class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" required>
+                    <p id="taskError" class="text-red-500 text-xs mt-1 hidden">Task is required</p>
+                </div>
+                <div>
+                    <label for="dueDate" class="block text-sm font-medium text-red-700 mb-1"><b>Date</b></label>
+                    <input type="date" id="dueDate" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" required>
+                    <p id="dateError" class="text-red-500 text-xs mt-1 hidden">Due date is required</p>
+                </div>
+                <div>
+                    <label for="priority" class="block text-sm font-large text-red-700 mb-1"><b>Obligation</b></label>
+                    <select id="priority" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                        <option value="low">Small</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">Large</option>
+                    </select>
+                </div>
+                <button type="submit" onclick="validateForm();" class="w-full bg-gradient text-white py-2 px-4 rounded-md hover:opacity-90 transition flex items-center justify-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Add Task</span>
+                </button>
+            </form>
+        </div>
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold">Your Taks</h2>
+                <div class="flex space-x-2">
+                    <select id="filterPriority" class="px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition text-sm">
+                        <option value="all">All</option>
+                        <option value="low">Small</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">Large</option>
+                    </select>
+                    <select id="filterStatus" class="px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition text-sm">
+                        <option value="all">All</option>
+                        <option value="completed">Completed</option>
+                        <option value="active">Active</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Tasks will be added here dynamically -->
+            <div id="taskList" class="task-container space-y-3">
+                <div class="text-center py-8 text-gray-400" id="emptyState">
+                    <img src="img/To do list.png" class="mx-auto mb-4 rounded-lg w-32 h-32 object-cover" alt="No tasks illustration showing a clipboard with an empty list">
+                    <p class="text-sm">No tasks added yet</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for empty input -->
+    <div id="emptyInputModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 pointer-events-none modal z-50">
+        <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 transform transition-all duration-300 scale-95">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">Input Error</h3>
+                <button id="closeModalBtn" class="text-gray-400 hover:text-gray-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <p class="text-gray-700 mb-4">Please fill in both the task and due date fields.</p>
+            <button id="modalConfirmBtn" class="w-full bg-gradient text-white py-2 px-4 rounded-md hover:opacity-90 transition">
+                OK
+            </button>
+        </div>
+    </div>
+    <div class="fixed bottom-3 right-3">
+        <button id="changeThemeBtn" class="p-3 rounded-full bg-white shadow-lg hover:shadow-xl transition-all" title="Change theme">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+            </svg>
+        </button>
+    </div>
+
+<footer>
+    <span>&copy; 2025 Sandy Ismawan. All rights reserved.</span>
+</footer>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
